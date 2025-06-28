@@ -12,55 +12,71 @@ function Book(title, author, pages, read = false) {
 }
 
 Book.prototype.addBookToLibrary = function () {
-  const isDuplicate = myLibrary.some((book) => book.title === this.title && book.author === this.author);
+  const isDuplicate = myLibrary.some(
+    (book) => book.title === this.title && book.author === this.author
+  );
   if (isDuplicate) {
     return "Book is already in Library";
-  }
-  else {
+  } else {
     myLibrary.push(this);
     return "Book added to Library";
   }
 };
 
-// Book.prototype.displayBook = function () {
-//   return `ID: ${this.id}, Title: ${this.title}, Author ${this.author}, Pages ${
-//     this.pages
-//   }, Read: ${this.read ? "Yes" : "No"} \n`;
-// };
+Book.prototype.displayBook = function () {
+  return `ID: ${this.id}, Title: ${this.title}, Author ${this.author}, Pages ${
+    this.pages
+  }, Read: ${this.read ? "Yes" : "No"} \n`;
+};
 
-// function displayLibrary() {
-//   let output = "";
-//   for (let book of myLibrary) {
-//     output += `${book.displayBook()}\n`;
-//   }
-//   return output || "Library is Empty";
-// }
-
-const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 310, true);
-book1.addBookToLibrary();
-
-const book2 = new Book("1984", "George Orwell", 328, false);
-book2.addBookToLibrary();
-
-const book3 = new Book("1984", "George Orwell", 328, false);
-book3.addBookToLibrary();
-
-console.log(displayLibrary());
-
-Book.prototype.displayBooks = function() {
-    const libraryContainer = document.querySelector('.library-container');
-    libraryContainer.innerHTML = ''; // Clear existing content
-
-    myLibrary.forEach((book, index) => {
-        const bookCard = document.createElement('div');
-        bookCard.classList.add('book-card');
-        bookCard.innerHTML = `
-            <h3>tanginamo</h3>
-            <p>Author: ${"yawa ka"}</p>
-            <p>Pages: ${book.pages}</p>
-            <p>Read: ${book.read ? 'Yes' : 'No'}</p>
-            <button class="delete-btn" data-index="${index}">Delete</button>
-        `;
-        libraryContainer.appendChild(bookCard);
-    });
+function displayLibrary() {
+  let output = "";
+  for (let book of myLibrary) {
+    output += `${book.displayBook()}\n`;
+  }
+  return output || "Library is Empty";
 }
+
+function displayBooks() {
+  const libraryContainer = document.querySelector(".library-container");
+  libraryContainer.innerHTML = ""; // Clear existing content
+
+  myLibrary.forEach((book, index) => {
+    const bookCard = document.createElement("div");
+    bookCard.classList.add("book-card");
+    bookCard.innerHTML = `
+      <h3>${book.title}</h3>
+      <p>Author: ${book.author}</p>
+      <p>Pages: ${book.pages}</p>
+      <p>Read: ${book.read ? "Yes" : "No"}</p>
+      <button class="delete-btn" data-index="${index}">Delete</button>
+    `;
+    libraryContainer.appendChild(bookCard);
+  });
+
+  // Add event listeners to delete buttons
+  document.querySelectorAll(".delete-btn").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      const index = parseInt(e.target.dataset.index);
+      myLibrary.splice(index, 1);
+      displayBooks();
+    });
+  });
+}
+
+// Modal handling
+const modal = document.getElementById("add-book-modal");
+const addBookBtn = document.querySelector(".add-book-btn");
+const cancelBtn = document.querySelector(".cancel-btn");
+const addBookForm = document.getElementById("add-book-form");
+
+// Open modal
+addBookBtn.addEventListener("click", () => {
+  modal.style.display = "flex";
+});
+
+// Close modal
+cancelBtn.addEventListener("click", () => {
+  modal.style.display = "none";
+  addBookForm.reset();
+});
