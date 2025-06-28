@@ -99,11 +99,6 @@ addBookForm.addEventListener('submit', (e) => {
   addBookForm.reset();
 });
 
-// Example usage
-const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 310, true);
-book1.addBookToLibrary();
-const book2 = new Book("1984", "George Orwell", 328, false);
-book2.addBookToLibrary();
 
 displayBooks();
 console.log(displayLibrary());
