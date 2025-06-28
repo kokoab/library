@@ -1,35 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Library App</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Library</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+
 </head>
-
 <body>
-    <h1>My Library</h1>
-    <button class="add-book-btn">Add Book</button>
-    <div class="library-container">Library is Empty</div>
+  <h1>My Library</h1>
+  <button id="add-book-btn">Add Book</button>
 
-    <div class="modal" id="add-book-modal">
-        <div class="modal-content">
-            <h2>Add New Book</h2>
-            <form id="add-book-form">
-                <input type="text" id="title" placeholder="Title" required>
-                <input type="text" id="author" placeholder="Author" required>
-                <input type="number" id="pages" placeholder="Pages" required min="1">
-                <label>
-                    <input type="checkbox" id="read"> Read
-                </label>
-                <button type="submit" class="save-btn">Save</button>
-                <button type="button" class="cancel-btn">Cancel</button>
-            </form>
+  <div class="library-container"></div>
+
+  <div class="modal" id="add-book-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <h2 id="modal-title">Add New Book</h2>
+      <form id="add-book-form">
+        <input type="text" id="title" placeholder="Title" required />
+        <input type="text" id="author" placeholder="Author" required />
+        <input type="number" id="pages" placeholder="Pages" required min="1" />
+        <label class="read-label">
+          <input type="checkbox" id="read" /> Read
+        </label>
+        <div class="form-buttons">
+          <button type="submit" class="save-btn">Save</button>
+          <button type="button" class="cancel-btn">Cancel</button>
         </div>
+      </form>
     </div>
+  </div>
 
-    <script src="script.js"></script>
+  <script src="script.js"></script>
 </body>
-
 </html>
