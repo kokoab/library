@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,31 +8,31 @@
     <link rel="stylesheet" href="style.css">
 
 </head>
+
 <body>
-    
+
     <h1>My Library</h1>
-    <div class="book-list">
-        <div class="book">
-            <h2>Book Title</h2>
-            <p>Author: Author Name</p>
-            <p>Pages: 300</p>
-            <p>Status: Read</p>
+
+    <div class="library-container"></div>
+
+
+    <div class="modal" id="add-book-modal">
+        <div class="modal-content">
+            <h2>Add New Book</h2>
+            <form id="add-book-form">
+                <input type="text" id="title" placeholder="Title" required>
+                <input type="text" id="author" placeholder="Author" required>
+                <input type="number" id="pages" placeholder="Pages" required min="1">
+                <label>
+                    <input type="checkbox" id="read"> Read
+                </label>
+                <button type="submit" class="save-btn">Save</button>
+                <button type="button" class="cancel-btn">Cancel</button>
+            </form>
         </div>
-        <!-- More book entries can be added here -->
-
     </div>
-    <div class="form-container">
-        <form id="book-form">
-            <input type="text" id="title" placeholder="Book Title" required>
-            <input type="text" id="author" placeholder="Author Name" required>
-            <input type="number" id="pages" placeholder="Number of Pages" required>
-            <label for="read">Read:</label>
-            <input type="checkbox" id="read">
-            <button type="submit">Add Book</button>
-        </form>
-
-    <button>New Book</button>
 
     <script src="script.js"></script>
 </body>
+
 </html>

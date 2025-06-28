@@ -22,19 +22,19 @@ Book.prototype.addBookToLibrary = function () {
   }
 };
 
-Book.prototype.displayBook = function () {
-  return `ID: ${this.id}, Title: ${this.title}, Author ${this.author}, Pages ${
-    this.pages
-  }, Read: ${this.read ? "Yes" : "No"} \n`;
-};
+// Book.prototype.displayBook = function () {
+//   return `ID: ${this.id}, Title: ${this.title}, Author ${this.author}, Pages ${
+//     this.pages
+//   }, Read: ${this.read ? "Yes" : "No"} \n`;
+// };
 
-function displayLibrary() {
-  let output = "";
-  for (let book of myLibrary) {
-    output += `${book.displayBook()}\n`;
-  }
-  return output || "Library is Empty";
-}
+// function displayLibrary() {
+//   let output = "";
+//   for (let book of myLibrary) {
+//     output += `${book.displayBook()}\n`;
+//   }
+//   return output || "Library is Empty";
+// }
 
 const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 310, true);
 book1.addBookToLibrary();
@@ -47,20 +47,20 @@ book3.addBookToLibrary();
 
 console.log(displayLibrary());
 
-// Book.prototype.displayBooks = function() {
-//     const libraryContainer = document.querySelector('.library-container');
-//     libraryContainer.innerHTML = ''; // Clear existing content
+Book.prototype.displayBooks = function() {
+    const libraryContainer = document.querySelector('.library-container');
+    libraryContainer.innerHTML = ''; // Clear existing content
 
-//     myLibrary.forEach((book, index) => {
-//         const bookCard = document.createElement('div');
-//         bookCard.classList.add('book-card');
-//         bookCard.innerHTML = `
-//             <h3>${book.title}</h3>
-//             <p>Author: ${book.author}</p>
-//             <p>Pages: ${book.pages}</p>
-//             <p>Read: ${book.read ? 'Yes' : 'No'}</p>
-//             <button class="delete-btn" data-index="${index}">Delete</button>
-//         `;
-//         libraryContainer.appendChild(bookCard);
-//     });
-// }
+    myLibrary.forEach((book, index) => {
+        const bookCard = document.createElement('div');
+        bookCard.classList.add('book-card');
+        bookCard.innerHTML = `
+            <h3>tanginamo</h3>
+            <p>Author: ${"yawa ka"}</p>
+            <p>Pages: ${book.pages}</p>
+            <p>Read: ${book.read ? 'Yes' : 'No'}</p>
+            <button class="delete-btn" data-index="${index}">Delete</button>
+        `;
+        libraryContainer.appendChild(bookCard);
+    });
+}
