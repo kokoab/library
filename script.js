@@ -1,88 +1,99 @@
-const myLibrary = [];
-
-function Book(title, author, pages, read = false) {
-  if (!new.target) {
-    throw new Error("Book constructor must be called with 'new'");
+class Book {
+  constructor(title, author, pages, read = false) {
+    this.id = crypto.randomUUID();
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
   }
-  this.id = crypto.randomUUID();
-  this.title = title;
-  this.author = author;
-  this.pages = pages;
-  this.read = read;
+
+  toggleRead() {
+    this.read = !this.read;
+  }
+
+  addToLibrary(library) {
+    const isDuplicate = library.books.some(
+      (book) => book.title === this.title && book.author === this.author
+    );
+    if (isDuplicate) {
+      return "Book is already in Library";
+    } else {
+      library.books.push(this);
+      return "Book added to Library";
+    }
+  }
 }
 
-Book.prototype.toggleRead = function () {
-  this.read = !this.read;
-};
-
-Book.prototype.addBookToLibrary = function () {
-  const isDuplicate = myLibrary.some(
-    (book) => book.title === this.title && book.author === this.author
-  );
-  if (isDuplicate) {
-    return "Book is already in Library";
-  } else {
-    myLibrary.push(this);
-    return "Book added to Library";
-  }
-};
-
-function displayBooks() {
-  const libraryContainer = document.querySelector(".library-container");
-  libraryContainer.innerHTML = ""; // Clear existing content
-
-  if (myLibrary.length === 0) {
-    const emptyMessage = document.createElement("p");
-    emptyMessage.classList.add("message");
-    emptyMessage.textContent = "Library is Empty";
-    libraryContainer.appendChild(emptyMessage);
-    return;
+class Library {
+  constructor() {
+    this.books = [];
   }
 
-  myLibrary.forEach((book) => {
-    const bookCard = document.createElement("div");
-    bookCard.classList.add("book-card");
-    bookCard.setAttribute("data-id", book.id);
+  displayBooks() {
+    const libraryContainer = document.querySelector(".library-container");
+    libraryContainer.innerHTML = "";
 
-    bookCard.innerHTML = `
-      <h3>${book.title}</h3>
-      <p><strong>Author:</strong> ${book.author}</p>
-      <p><strong>Pages:</strong> ${book.pages}</p>
-      <p><strong>Read:</strong> <button class="toggle-read-btn">${book.read ? "Yes" : "No"}</button></p>
-      <div class="buttons">
-        <button class="delete-btn">Delete</button>
-      </div>
-    `;
+    if (this.books.length === 0) {
+      const emptyMessage = document.createElement("p");
+      emptyMessage.classList.add("message");
+      emptyMessage.textContent = "Library is Empty";
+      libraryContainer.appendChild(emptyMessage);
+      return;
+    }
 
-    libraryContainer.appendChild(bookCard);
-  });
+    this.books.forEach((book) => {
+      const bookCard = document.createElement("div");
+      bookCard.classList.add("book-card");
+      bookCard.setAttribute("data-id", book.id);
+
+      bookCard.innerHTML = `
+        <h3>${book.title}</h3>
+        <p><strong>Author:</strong> ${book.author}</p>
+        <p><strong>Pages:</strong> ${book.pages}</p>
+        <p><strong>Read:</strong> <button class="toggle-read-btn">${book.read ? "Yes" : "No"}</button></p>
+        <div class="buttons">
+          <button class="delete-btn">Delete</button>
+        </div>
+      `;
+
+      libraryContainer.appendChild(bookCard);
+    });
+  }
+
+  removeBook(bookId) {
+    const bookIndex = this.books.findIndex((book) => book.id === bookId);
+    if (bookIndex !== -1) {
+      this.books.splice(bookIndex, 1);
+    }
+  }
 }
 
-// Event delegation for delete and toggle read buttons
-document.querySelector(".library-container").addEventListener("click", (e) => {
-  const target = e.target;
-  const bookCard = target.closest(".book-card");
-  if (!bookCard) return;
-
-  const bookId = bookCard.getAttribute("data-id");
-  const bookIndex = myLibrary.findIndex((book) => book.id === bookId);
-  if (bookIndex === -1) return;
-
-  if (target.classList.contains("delete-btn")) {
-    myLibrary.splice(bookIndex, 1);
-    displayBooks();
-  } else if (target.classList.contains("toggle-read-btn")) {
-    myLibrary[bookIndex].toggleRead();
-    displayBooks();
-  }
-});
-
-// Modal handling
+// Initialize library and set up event listeners
 document.addEventListener("DOMContentLoaded", () => {
+  const library = new Library();
   const modal = document.getElementById("add-book-modal");
   const addBookBtn = document.getElementById("add-book-btn");
   const cancelBtn = modal.querySelector(".cancel-btn");
   const addBookForm = document.getElementById("add-book-form");
+
+  // Event delegation for delete and toggle read buttons
+  document.querySelector(".library-container").addEventListener("click", (e) => {
+    const target = e.target;
+    const bookCard = target.closest(".book-card");
+    if (!bookCard) return;
+
+    const bookId = bookCard.getAttribute("data-id");
+    if (target.classList.contains("delete-btn")) {
+      library.removeBook(bookId);
+      library.displayBooks();
+    } else if (target.classList.contains("toggle-read-btn")) {
+      const bookIndex = library.books.findIndex((book) => book.id === bookId);
+      if (bookIndex !== -1) {
+        library.books[bookIndex].toggleRead();
+        library.displayBooks();
+      }
+    }
+  });
 
   // Open modal
   addBookBtn.addEventListener("click", () => {
@@ -105,9 +116,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (title && author && pages > 0) {
       const newBook = new Book(title, author, pages, read);
-      const result = newBook.addBookToLibrary();
+      const result = newBook.addToLibrary(library);
       if (result === "Book added to Library") {
-        displayBooks();
+        library.displayBooks();
       } else {
         alert(result);
       }
@@ -117,11 +128,11 @@ document.addEventListener("DOMContentLoaded", () => {
     addBookForm.reset();
   });
 
-  // Add some initial books
+  // Add initial books
   const book1 = new Book("The Hobbit", "J.R.R. Tolkien", 310, true);
-  book1.addBookToLibrary();
+  book1.addToLibrary(library);
   const book2 = new Book("1984", "George Orwell", 328, false);
-  book2.addBookToLibrary();
+  book2.addToLibrary(library);
 
-  displayBooks();
+  library.displayBooks();
 });
